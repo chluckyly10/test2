@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>请登录</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css" >
+    <script src="js/jQuery v3.6.0.js"></script>
+    </head>
+
+  <body>
+    <div id="Login-box">
+      <div class="form">
+        <form name="Form" onsubmit="return validateForm()" method="POST">
+          <div class="item">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            <input type="text" id="username" placeholder="Username" name="user" />
+          </div>
+          <div class="item">
+            <i class="fa fa-key" aria-hidden="true"></i>
+            <input type="password" id="password" placeholder="Password" name="key" />
+          </div>
+          <button>注册</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    let admin = [{
+      name:'张三',
+      password:'123456'
+    },{
+      name:'李四',password:'1234567'
+    },{
+      name:'张飞',password:'12345678'
+    }]
+    //标记用户名和密码是否符合要求,0表示不符合要求，1表示符合要求
+    let test_name = 0,test_pwd = 0    
+    $("#username").blur(()=>{
+        $.each(admin,(index,item)=>{
+            //获取当前用户名
+            let uname = $("#username").val()
+            //判断用户名是否为空
+            if(!uname||!uname.trim()) {
+              alert("用户名不能为空")
+              return false
+            }
+            //判断 是否 与系统用户重命名
+            uname.trim()===item.name ? alert("用户名已存在") : test_name = 1
+        })
+    })
+    // 匹配以数字或者字母开头，并且至少6位
+    let pwd_test =  /^[a-zA-Z0-9]{6,}$/
+    $("#password").blur(()=>{
+        // 获取当前密码框的密码
+        let pwd = $("#password").val()
+        // 判断密码是否为空
+        if(!pwd||!pwd.trim()) {
+              alert("密码不能为空")
+              return false
+            }
+        // 判断密码是否符合要求
+        !pwd_test.test(pwd) ? alert("密码必须以数字或字母开头且至少6位") : test_pwd = 1
+    })
+    $("button").click(()=>{
+        //检验用户名和密码是否都符合要求
+        test_name === 1&&test_pwd === 1 ? alert("注册成功") : alert("注册失败")
+    })
+
+    //第二种方法
+    // $("#username").blur(()=>{
+    //     $.ajax({
+    //       type:'get',
+    //       url:{},
+    //       data:{uname},
+    //       success(res){
+    //         $.each(admin,(index,item)=>{
+    //         //获取当前用户名
+    //         let uname = $("#username").val()
+    //         //判断用户名是否为空
+    //         if(!uname||!uname.trim()) {
+    //           alert("用户名不能为空")
+    //           return false
+    //         }
+    //         //判断 是否 与系统用户重命名
+    //         uname.trim()===item.name ? alert("用户名已存在") : test_name = 1
+    //       })
+    //       },
+    //       error(res){
+    //         alert("登录失败 原因是：" + data)
+    //       },
+    //       complete(res){
+    //         //==不管请求是否成功，请求返回值是否正确都关闭遮罩结束登录中的提示==//
+    //         loading = false
+    //       }
+    //     })
+    // })
+    // 匹配以数字或者字母开头，并且至少6位
+    // let pwd_test =  /^[a-zA-Z0-9]{6,}$/
+    // $("#password").blur(()=>{
+    //   $.ajax({
+    //       type:'get',
+    //       url:{},
+    //       data:{pwd},
+    //       success(res){
+    //         // 获取当前密码框的密码
+    //         let pwd = $("#password").val()
+    //         // 判断密码是否为空
+    //         if(!pwd||!pwd.trim()) {
+    //           alert("密码不能为空")
+    //           return false
+    //         }
+    //       // 判断密码是否符合要求
+    //       !pwd_test.test(pwd) ? alert("密码必须以数字或字母开头且至少6位") : test_pwd = 1
+    //       },
+    //       error(res){
+    //         alert("登录失败 原因是：" + data)
+    //       },
+    //       complete(res){
+    //         //==不管请求是否成功，请求返回值是否正确都关闭遮罩结束登录中的提示==//
+    //         loading = false
+    //       }
+    //     })
+    // })
+    // $("button").click(()=>{
+    //     //检验用户名和密码是否都符合要求
+    //     test_name === 1&&test_pwd === 1 ? alert("注册成功") : alert("注册失败")
+    // })
+  </script>
+</html>

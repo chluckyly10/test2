@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>请登录</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="css/style.css" >
+    <script src="js/jQuery v3.6.0.js"></script>
+    </head>
+  <body>
+    <div id="Login-box">
+      <h2 style="color: #fff;">请登录</h2>
+      <div class="form">
+          <div class="item">
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            <input type="text" placeholder="Username" name="user" />
+          </div>
+          <div class="item">
+            <i class="fa fa-key" aria-hidden="true"></i>
+            <input type="password" placeholder="Password" name="key" />
+          </div>
+          <button >Login</button>
+        
+      </div>
+      <div id="Register">
+        <pre><a href="Untitled-2.html">注册</a></pre>
+      </div>
+    </div>
+  </body>
+  <script>
+      let admin = [{name:'张三',password:'123456'},{name:'李四',password:'1234567'},{name:'张飞',password:'12345678'}]
+      $("button").click(()=>{
+        let uname = $(".item:eq(0)").children(":last").val()
+        let pwd = $(".item:eq(1)").children(":last").val()
+        let sus = 0;  // 判断是否登录成功
+        $.each(admin,(index,item)=>{
+            if(uname.trim()===item.name && pwd.trim()===item.password)
+            { sus = 1 
+               return false
+            }
+            
+        })
+        if(sus === 1) alert("登录成功")
+        else alert("登录失败")
+      })
+
+      // $("button").click(()=>{
+      //   let uname = $(".item:eq(0)").children(":last").val()
+      //   let pwd = $(".item:eq(1)").children(":last").val()
+      //   let sus = 0 // 判断是否登录成功
+      //   $.ajax({
+      //     type:'get',
+      //     url:'js/data.txt',
+      //     data:{},
+      //     async:true,
+      //     dataType:'json',
+      //     success(res){
+      //       let obj = JSON.parse(res)  //转换为JSON数据
+      //       alert(obj)
+      //       $.each(obj,(index,item)=>{
+      //         if(uname.trim()===item.name && pwd.trim()===item.password)
+      //        { sus = 1 
+      //          return false
+      //        }
+      //       })
+      //       if(sus === 1) alert("登录成功")
+      //       else alert("登录失败")
+      //     },
+      //     error(res){
+      //       console.log("请求失败")
+      //     },
+      //     complete(res){
+      //       console.log('释放资源')
+      //     },
+      //   })
+      // })
+      
+  </script>
+</html>
