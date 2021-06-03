@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- 引入jquery文件 -->
+		<script src="js/jQuery%20v3.6.0.js"></script>
+		<style>
+			table{
+				border:1px solid black;
+				width: 900px;
+				margin: 0 auto;
+			}
+			td{
+				border-top:1px solid black;
+				padding-left: 10px;
+				padding-bottom: 20px;
+			}
+			img{
+				width: 60px;
+				height: 60px;
+				
+			}
+			.price{
+				float: left;
+				margin-left: 280px;
+				margin-top: -50px;
+				color: red;
+			}
+			
+			#amount{color: red;font-size: 20px;}
+			.count{	width: 40px;}
+			.pre,.next{ font-size: 18px;}
+		</style>
+	</head>
+	<body>
+		<table cellpadding="0" cellspacing="0">
+			<tr  height="60px">
+				<td><input type="checkbox" id="checkAll" /></td>
+				<td style="text-align: center;" colspan="2">
+					您一共需要支付:￥
+					<span  id="amount">0</span>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" class="check" /></td>
+				<td>
+					<p>草莓</p>
+					<div><img src="img/OIP.jpg" /></div>
+					<div class="price"> ￥<span>25</span></div>
+				</td>
+				<td>
+					<span class="pre">-</span>
+					<input type="text" value="1" class="count" />
+					<span class="next">+</span>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" class="check" /></td>
+				<td>
+					<p>西红柿</p>
+					<div><img src="img/IP.jpg" /></div>
+					<div class="price"> ￥<span>5</span></div>
+				</td>
+				<td>
+					<span class="pre">-</span>
+					<input type="text" value="1"  class="count" />
+					<span class="next">+</span>
+				</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" class="check" /></td>
+				<td>
+					<p>青苹果</p>
+					<div><img src="img/下载.jpg" /></div>
+					<div class="price"> ￥<span>20</span></div>
+				</td>
+				<td>
+					<span class="pre">-</span>
+					<input type="text" value="1" class="count" />
+					<span class="next">+</span>
+				</td>
+			</tr>
+		</table>
+	</body>
+	 
+	<script type="text/javascript">
+		// JQ入口函数
+		$(()=>{
+			let total=0
+			//--点击全选框时触发的方法--//
+			$("#checkAll").click(()=>{
+				//--全选框选中时--//
+				if($("#checkAll").prop("checked"))
+				{
+					total = 0
+					$(".check").each((index,item)=>{
+						//--复选框都勾选--//
+						$(item).prop("checked",true)
+						//--获取到对应的单价--//
+						let itemPrice = parseInt($(item).parent().next().find("span").html())
+						//--获取到对应的数量--//  
+						let itemCount = parseInt($(item).parent().next().next().find(".count").val())
+						//--累加单个商品的总额--//
+						total += itemPrice*itemCount
+					})
+					//--变更总价格--//
+					$("#amount").html(total);
+				}
+				//--取消全选时--//
+				else{
+					//--复选框都不勾选--//
+					$(".check").prop("checked",false)
+					//--变更总价格--//
+					$("#amount").html('0')
+				}
+			})
+			//--商品复选框选中或取消触发的方法--//
+			$(".check").click(()=>{
+				//--记录复选框选中的数量--//
+				let num = 0
+				total=0
+				//--当复选框选中后全部取消时总额变为初始值--//
+				if(num == 0) $("#amount").html("0")
+				//--依次遍历复选框--//
+				$(".check").each((i,value)=>{
+					//--如果是选中状态时--//
+					if($(value).prop("checked")){
+						//--获取到对应的单价--//
+						let itemPrice = parseInt($(value).parent().next().find("span").html())
+						//--获取到对应的数量--//  
+						let itemCount = parseInt($(value).parent().next().next().find(".count").val())
+						//--累加单个商品的总额--//
+						total += itemPrice*itemCount
+						//--变更总价格--//
+						$("#amount").html(total)
+						//--复选框选中的计数器+1--//
+						num += 1
+					}
+					//==判断计数器的数字是否等于所有复选框的长度==//
+					if(num == $(".check").length){
+						//--等于则自动勾上全选--//
+						$("#checkAll").prop("checked",true)
+					}
+					else{
+						//--不等于则不勾选--//
+						$("#checkAll").prop("checked",false)
+					}
+				})
+			})
+			$(".pre").each((index,item)=>{
+				// --减少数量时触发的方法--//
+				$(item).click(()=>{
+					//--判断数量是否大于0，大于0才能进行-1--//
+					if($(item).next().val()>0){
+						//--在原来的数量上-1操作--//
+						let v = parseInt($(item).next().val())-1
+						//--变更当前商品页面上的数量--//
+						$(item).next().val(v)
+						//--若变更数量的商品复选框为选中状态，也要变更总价格--//
+						if($(item).parent().prev().prev().find("input").prop("checked")){
+							//--以数量为1的步长递减--//
+							total -=parseInt($(item).parent().prev().find("span").html())
+							$("#amount").html(total)
+						}	
+					}
+				})
+				// --增加数量时触发的方法--//
+				$(item).next().next().click(()=>{
+					//--在原来的数量上+1操作--//
+					let v = parseInt($(item).next().val())+1
+					$(item).next().val(v)
+					//--若变更数量的商品复选框为选中状态，也要变更总价格--//
+					if($(item).parent().prev().prev().find("input").prop("checked")){
+						//--以数量为1的步长递增--//
+						total +=parseInt($(item).parent().prev().find("span").html())*1
+						$("#amount").html(total)
+					}
+				})
+			})
+		})
+	</script>
+</html>
